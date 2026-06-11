@@ -2,7 +2,7 @@
 
 # Oolong
 
-**A tiny, native macOS menu-bar companion for Claude Code** — live usage & official rate limits, keep-awake, and system stats, all in one dropdown.
+**The zero-credential, all-in-one menu-bar cockpit for Claude Code** — usage & official rate limits, keep-awake, and system stats in one native dropdown. Never touches your tokens.
 
 ![Platform](https://img.shields.io/badge/platform-macOS%2013%2B-black?logo=apple)
 ![Swift](https://img.shields.io/badge/Swift-5.9%2B-orange?logo=swift)
@@ -22,6 +22,21 @@ English | [简体中文](README.zh-CN.md)
 Oolong lives in your menu bar and shows everything you want to glance at while coding with Claude Code: how many tokens/dollars you've burned today, where you stand against the **official 5-hour and 7-day rate limits**, your machine's vitals, and a one-tap **keep-awake** for long-running tasks. Pure Swift/SwiftUI, ~760 KB, no Electron.
 
 > Focused on **Claude Code only** (no Codex). Inspired by community menu-bar tools, rebuilt natively with a Claude-style warm theme.
+
+## 🆚 Why Oolong?
+
+There are several great Claude usage monitors. Oolong takes a different trade: **everything in one panel, and zero access to your credentials.**
+
+| | Oolong | [ClaudeBar](https://github.com/tddworks/ClaudeBar) | [Claude-Usage-Tracker](https://github.com/hamed-elfayome/Claude-Usage-Tracker) | [ccseva](https://github.com/Iamshankhadeep/ccseva) | [ClaudeMeter](https://github.com/eddmann/ClaudeMeter) |
+|---|---|---|---|---|---|
+| Official rate-limit % | ✅ status line | ✅ CLI / OAuth | ✅ cookie | ❌ estimated | ✅ cookie |
+| Credentials required | **none** | OAuth token | claude.ai cookie | none | claude.ai cookie |
+| Network calls for usage | **none** | api.anthropic.com | claude.ai | none | claude.ai |
+| Keep-awake (caffeinate / lid-closed) | ✅ | ❌ | ❌ | ❌ | ❌ |
+| System stats (CPU/mem/battery) | ✅ | ❌ | ❌ | ❌ | ❌ |
+| Stack | Swift, ~760 KB | Swift | Swift | Electron | Swift |
+
+The honest trade-off: Oolong's rate-limit % only refreshes while Claude Code is active (the reset countdown is always accurate). If you want multi-provider quotas (Codex/Gemini/Copilot...) or anytime-refresh, the projects above do that well — they just need your OAuth token or claude.ai cookie to do it. Oolong never reads either.
 
 ## ✨ Features
 

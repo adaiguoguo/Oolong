@@ -2,7 +2,7 @@
 
 # Oolong
 
-**一个轻巧的原生 macOS 菜单栏工具，专为 Claude Code 打造** —— 实时用量、官方限流、保持唤醒、系统状态，一个下拉面板全搞定。
+**零凭据、一体化的 Claude Code 菜单栏驾驶舱** —— 用量、官方限流、保持唤醒、系统状态，一个原生面板全搞定，绝不碰你的 token。
 
 ![Platform](https://img.shields.io/badge/platform-macOS%2013%2B-black?logo=apple)
 ![Swift](https://img.shields.io/badge/Swift-5.9%2B-orange?logo=swift)
@@ -22,6 +22,21 @@
 Oolong 常驻菜单栏，把你用 Claude Code 时想随手看的信息都摆在一个下拉面板里：今天烧了多少 token / 多少钱、距离**官方 5 小时 / 7 天限流**还剩多少、机器的实时状态，以及跑长任务时一键**保持唤醒**。纯 Swift/SwiftUI，约 760 KB，没有 Electron。
 
 > 只做 **Claude Code**（不含 Codex）。参考了社区的菜单栏工具，用原生重写，并配上 Claude 风格的暖色主题。
+
+## 🆚 为什么选 Oolong？
+
+Claude 用量监控工具不少，Oolong 选了一条不同的路：**所有信息一个面板，且完全不碰你的凭据。**
+
+| | Oolong | [ClaudeBar](https://github.com/tddworks/ClaudeBar) | [Claude-Usage-Tracker](https://github.com/hamed-elfayome/Claude-Usage-Tracker) | [ccseva](https://github.com/Iamshankhadeep/ccseva) | [ClaudeMeter](https://github.com/eddmann/ClaudeMeter) |
+|---|---|---|---|---|---|
+| 官方限流 % | ✅ status line | ✅ CLI / OAuth | ✅ cookie | ❌ 本地估算 | ✅ cookie |
+| 需要的凭据 | **无** | OAuth token | claude.ai cookie | 无 | claude.ai cookie |
+| 用量相关网络请求 | **无** | api.anthropic.com | claude.ai | 无 | claude.ai |
+| 保持唤醒（防睡眠/合盖不睡） | ✅ | ❌ | ❌ | ❌ | ❌ |
+| 系统状态（CPU/内存/电池） | ✅ | ❌ | ❌ | ❌ | ❌ |
+| 技术栈 | Swift，约 760 KB | Swift | Swift | Electron | Swift |
+
+诚实的取舍：Oolong 的限流百分比只在 Claude Code 活跃时刷新（重置倒计时任何时候都准确）。如果你需要多家配额（Codex/Gemini/Copilot…）或随时刷新，上面这些项目做得很好——代价是要把 OAuth token 或 claude.ai cookie 交给它们。Oolong 两样都不读。
 
 ## ✨ 功能
 
