@@ -41,6 +41,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
         popover.behavior = .transient
         popover.animates = true
+        popover.delegate = self
         let host = NSHostingController(rootView: MenuContentView(model: model))
         host.sizingOptions = [.preferredContentSize]   // 把 SwiftUI 固有尺寸同步给 popover，避免内容被裁
         host.view.appearance = NSAppearance(named: .aqua)   // 固定浅色，保证暖米白配色不被深色模式翻转
@@ -58,4 +59,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             popover.contentViewController?.view.window?.makeKey()
         }
     }
+}
+
+// 面板开/关时启停定时器：只在用户实际查看时刷新，省电
+extension AppDelegate: NSPopoverDelegate {
+    func popoverDidShow(_ notification: Notification) { model.panelDidOpen() }
+    func popoverDidClose(_ notification: Notification) { model.panelDidClose() }
 }

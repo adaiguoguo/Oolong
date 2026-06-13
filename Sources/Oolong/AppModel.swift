@@ -35,7 +35,8 @@ final class AppModel: ObservableObject {
 
     private var refreshTimer: Timer?
     private var uiTimer: Timer?
-    private let refreshInterval: TimeInterval = 30
+    private let activeRefreshInterval: TimeInterval = 60   // 面板打开时的用量刷新间隔
+    private let openRefreshThrottle: TimeInterval = 30     // 距上次刷新不足此值则跳过(防快速开关反复跑 ccusage)
 
     init(usageProvider: UsageProvider = CCUsageProvider()) {
         self.usageProvider = usageProvider
@@ -55,14 +56,34 @@ final class AppModel: ObservableObject {
     }
 
     func start() {
-        refresh()
-        refreshTimer = Timer.scheduledTimer(withTimeInterval: refreshInterval, repeats: true) { [weak self] _ in
-            Task { @MainActor in self?.refresh() }
+        refresh()   // 启动拉一次，首次打开即有数据
+        // 不开后台定时器：菜单栏只是静态图标，面板关闭时零刷新最省电
+    }
+
+    /// 面板打开：高频刷新 + 1s 本地状态定时器
+    func panelDidOpen() {
+        _ = statsService.sample()   // 重置 CPU 基线（空闲久了首读会偏）
+        tickLocal()
+        // 数据超过 30s 才重拉，避免快速开关反复跑 ccusage（每次约 2.3s CPU × 4）
+        if let last = lastUpdated, Date().timeIntervalSince(last) <= openRefreshThrottle {
+            // 仍新鲜，跳过
+        } else {
+            refresh()
         }
-        // 每秒刷新本地状态（系统状态 + 倒计时 + “更新于N秒前”）
+        uiTimer?.invalidate()
         uiTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
             Task { @MainActor in self?.tickLocal() }
         }
+        refreshTimer?.invalidate()
+        refreshTimer = Timer.scheduledTimer(withTimeInterval: activeRefreshInterval, repeats: true) { [weak self] _ in
+            Task { @MainActor in self?.refresh() }
+        }
+    }
+
+    /// 面板关闭：停掉所有定时器，回到零开销
+    func panelDidClose() {
+        uiTimer?.invalidate(); uiTimer = nil
+        refreshTimer?.invalidate(); refreshTimer = nil
     }
 
     private func tickLocal() {
