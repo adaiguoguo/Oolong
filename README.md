@@ -145,6 +145,20 @@ Sources/Oolong/
 - Prebuilt binary is **arm64**; Intel needs a universal build.
 - The `.app` is **ad-hoc signed** (no paid Developer ID), hence the first-launch Gatekeeper step.
 
+## ❓ FAQ
+
+**The icon doesn't show up in my menu bar (notched MacBook).**
+macOS hides menu-bar items that don't fit, and the notch eats space — so on a crowded bar the cup can end up hidden behind it. Oolong is still running. Fixes: ⌘-drag the cup **rightward** toward the clock (the right edge is always visible), turn off a few icons you don't need, or use a menu-bar manager like [Ice](https://github.com/jordanbaird/Ice) (free) to reclaim overflow.
+
+**The icon only appears on my external display, not the built-in one.**
+With "Displays have separate Spaces" on (the default), third-party menu-bar items render on whichever display is currently active. Click a window on the built-in screen to move them there, or turn that setting off (System Settings → Desktop & Dock) for a single fixed menu bar.
+
+**Usage / cost shows an error like `ccusage failed: env: node: No such file or directory`.**
+The app couldn't find Node on the restricted PATH a GUI app inherits. Make sure `node` and `ccusage` are installed; Oolong injects your login shell's PATH, so a normal `bun add -g ccusage` / Homebrew setup works.
+
+**The numbers don't match `/usage` exactly.**
+The 5h/7d **% used and reset time** match `/usage` (same source). Token/cost totals come from `ccusage` and are a separate, log-based metric. The % only refreshes while Claude Code is active; the reset countdown is always accurate.
+
 ## 🔒 Privacy
 
 100% local. Oolong reads your local Claude Code logs (through `ccusage`) and the rate-limit file you opt into. The only network access is `ccusage` fetching **public** model-pricing data. No credentials are read, nothing is uploaded, no telemetry.

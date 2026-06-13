@@ -145,6 +145,20 @@ Sources/Oolong/
 - 预编译二进制是 **arm64**；Intel 需通用编译。
 - `.app` 为 **ad-hoc 签名**（无付费 Developer ID），所以首次启动需要上面那一步。
 
+## ❓ 常见问题
+
+**菜单栏看不到图标（刘海屏 MacBook）。**
+macOS 会把放不下的菜单栏图标隐藏，刘海又占掉中间一块——菜单栏一满，茶杯就可能被藏到刘海后面。这时 Oolong 其实还在运行。解决：按住 ⌘ 把茶杯**往右拖**到靠近时钟（最右侧永远可见）；关掉几个用不到的图标；或装个菜单栏管理工具如 [Ice](https://github.com/jordanbaird/Ice)（免费）收纳溢出图标。
+
+**图标只在外接显示器出现，内置屏没有。**
+开启「显示器具有单独空间」（默认）时，第三方菜单栏图标只显示在当前**活跃**的那块屏。点一下内置屏上的窗口让它变活跃，图标就会过去；或在「系统设置 → 桌面与程序坞」关掉该选项，变成单一固定菜单栏。
+
+**用量/花费报错 `ccusage failed: env: node: No such file or directory`。**
+GUI 应用继承的 PATH 很精简，找不到 Node。确认装了 `node` 和 `ccusage` 即可——Oolong 会注入你登录 shell 的 PATH，正常的 `bun add -g ccusage` / Homebrew 安装就能用。
+
+**数字和 `/usage` 对不上。**
+5h/7d 的**已用 % 和重置时间**与 `/usage` 一致（同源）；token/花费总量来自 `ccusage`，是另一套基于日志的指标。百分比只在 Claude Code 活跃时刷新，重置倒计时任何时候都准。
+
 ## 🔒 隐私
 
 完全本地。Oolong 读取你本地的 Claude Code 日志（经由 `ccusage`）和你自愿开启的限流文件。唯一的联网是 `ccusage` 拉取**公开**的模型定价数据。不读取任何凭据，不上传任何内容，无遥测。
