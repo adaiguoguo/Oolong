@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [1.0.1] - 2026-06-13
+
+### Fixed
+- **High energy use**: timers now pause completely while the panel is closed. Previously `ccusage` was spawned every 30s (~9s CPU) even when nobody was looking, which macOS flagged as "Using Significant Energy". Closed = zero work; open = 1s stats tick + usage refresh on open (throttled) and every 60s while visible.
+
+### Changed
+- Repositioned README around the real differentiators (zero-credential, all-in-one) with an honest comparison table vs. other Claude usage monitors.
+
+### Docs
+- Added FAQ covering notched-MacBook menu-bar hiding, multi-display behavior, the `env: node` PATH error, and `/usage` number differences.
+
 ## [1.0.0] - 2026-06-10
 
 ### Added
